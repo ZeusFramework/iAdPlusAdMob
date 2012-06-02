@@ -124,11 +124,33 @@
 - (void)layoutAnimated:(BOOL)animated withInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	// iAd logic
-    if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
-        self.bannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
-    } else {
-        self.bannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+    if ([[UIDevice currentDevice].systemVersion floatValue] >= 4.2f)
+    {
+        if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
+        {
+            self.bannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierPortrait;
+        }
+        else
+        {
+            self.bannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifierLandscape;
+        }
     }
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_4_2
+    
+    else
+    {
+        if (UIInterfaceOrientationIsPortrait(interfaceOrientation))
+        {
+            self.bannerView.curr entContentSizeIdentifier = ADBannerContentSizeIdentifier320x50;
+        }
+        else
+        {
+            self.bannerView.currentContentSizeIdentifier = ADBannerContentSizeIdentifier480x32;
+        }
+    }
+    
+#endif
     
     CGRect contentFrame = self.view.bounds;
     CGRect bannerFrame = self.bannerView.frame;
